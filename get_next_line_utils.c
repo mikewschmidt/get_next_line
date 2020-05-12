@@ -12,7 +12,8 @@ t_buff	*get_buff()
 		return (NULL);
 	temp->idx = 0;
 	temp->eol = 0;
-	temp->endfile = 1;
+	temp->line_size = 0;
+	temp->line_idx = 0;
 	return (temp);
 }
 
@@ -47,8 +48,11 @@ t_buff	*add_fd_node(t_list **head, int fd)
 t_buff	*get_fd_node(t_list **head, int fd)
 {
 	t_list	*curr;
+	char	test[1];
 
 	curr = *head;
+	if (fd < 0 || (read(fd, test, 0) == -1))
+		return (NULL);
 	if (!curr)
 		return(add_fd_node(head, fd));
 	while (curr->fd != fd && curr->next != NULL)
@@ -61,26 +65,30 @@ t_buff	*get_fd_node(t_list **head, int fd)
 		return (add_fd_node(head, fd));
 }
 
-void	set_tracking_vars(int fd, t_buff *tracker)
+void	check_line_buff(char **line, t_buff **b)
 {
-	if (tracker->eol < BUFFER_SIZE && tracker->idx == tracker->eol - 1)
+	int	i;
+	char	*temp;
+
+	i = 0;
+	if ((*b)->line_idx >= (*b)->line_size - 1)
 	{
-		tracker->endfile = 0;
+		(*b)->line_size = ((*b)->line_size == 0) ? 2 : (*b)->line_size;
+		if(!(temp = (char*)malloc((*b)->line_size * (*b)->line_size * sizeof(char))))
+			return ;
+		if ((*b)->line_size > 2)
+		{
+			while (i < (*b)->line_size)
+			{
+				temp[i] = (*line)[i];
+				i++;	
+			}
+			free(*line);
+		}
+		*line = temp;
+		(*b)->line_idx = i;
+		(*b)->line_size *= (*b)->line_size;
 	}
-	else if (tracker->idx == BUFFER_SIZE - 1)
-	{
-		tracker->idx = 0;
-		tracker->eol = read(fd, tracker->buff, BUFFER_SIZE);
-		if (tracker->eol == 0)
-			tracker->endfile = 0;
-	}
-	else if (tracker->eol < tracker->idx)
-	{
-		tracker->endfile = 0;
-	}
-	else if (tracker->endfile == 1)
-	{
-		tracker->idx++;
-		tracker->eol = 1;
-	}
+	else
+		(*b)->line_idx++;
 }

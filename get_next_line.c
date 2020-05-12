@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "get_next_line.h"
@@ -10,23 +9,25 @@ int	get_next_line(int fd, char **line)
 	int		j;
 
 	j = 0;
-	temp = get_fd_node(&head, fd);
-	if (!temp)
+	if(!(temp = get_fd_node(&head, fd)))
 		return (-1);
-	if (temp->eol == 0)
-		temp->eol = read(fd, temp->buff, BUFFER_SIZE);
-	while (temp->buff[temp->idx] != '\n' && temp->eol > 0)
+	if(temp->idx == 0)
+		if((temp->eol = read(fd, temp->buff, BUFF_SIZE)) == 0)
+			return (0);
+	while ( temp->eol > 0)
 	{
-		(*line)[j] = temp->buff[temp->idx];
-		j++;
-		temp->idx++;
-		if (temp->buff[temp->idx] == '\0')
+		check_line_buff(line, &temp);
+		if (temp->buff[temp->idx] == '\n')
+			break ;
+		(*line)[j++] = temp->buff[temp->idx++];
+		if (temp->idx >= temp->eol)
 		{
-			temp->eol = read(fd, temp->buff, BUFFER_SIZE);
+			temp->eol = read(fd, temp->buff, BUFF_SIZE);
 			temp->idx = 0;
 		}
 	}
 	(*line)[j] = '\0';
-	set_tracking_vars(fd, temp);
-	return (temp->endfile);
+	temp->line_size = 0;
+	(temp->idx >= temp->eol - 1) ? (temp->idx = 0) : (temp->idx++);
+	return (1);
 }
