@@ -1,6 +1,6 @@
+#include "get_next_line.h"
 #include <unistd.h>
 #include <fcntl.h>
-#include "get_next_line.h"
 
 int	get_next_line(int fd, char **line)
 {
@@ -14,11 +14,10 @@ int	get_next_line(int fd, char **line)
 	if(temp->idx == 0)
 		if((temp->eol = read(fd, temp->buff, BUFF_SIZE)) == 0)
 			return (0);
-	while ( temp->eol > 0)
+	check_line_buff(line, &temp);
+	while (temp->buff[temp->idx] != '\n' && temp->eol > 0)
 	{
 		check_line_buff(line, &temp);
-		if (temp->buff[temp->idx] == '\n')
-			break ;
 		(*line)[j++] = temp->buff[temp->idx++];
 		if (temp->idx >= temp->eol)
 		{
