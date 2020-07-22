@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 16:55:58 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/07/22 01:02:39 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/07/22 01:04:06 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-int		reached_eof(char **line, int rturn)
+int	reached_eof(char **line, int rturn)
 {
 	if (rturn == -1)
 		return (-1);
@@ -25,7 +25,7 @@ int		reached_eof(char **line, int rturn)
 	return (0);
 }
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static t_list	*head;
 	t_buff			*temp;
