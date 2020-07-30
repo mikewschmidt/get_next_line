@@ -23,6 +23,14 @@ OUTPUT
 -1: An error occured
 
 
+INTERNAL EXPLAINATION OF FUNCTIONS
+Variables:
+static t_list *head: 
+A static linked list that points to the head of the linked list. It is static so it will remain persistent across function calls
+
+
+
+
 
 
 
