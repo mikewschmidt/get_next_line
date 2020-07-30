@@ -2,6 +2,7 @@
 Function to read from a file descriptor one line at a time, every time it is called.
 
 
+
 DESCRIPTION:
 Call the get_next_line fuction to read a line of text from the specified file descriptor (fd), without the newline, into a variable (line).
 Calling the function get_next_line in a loop will then allow you to read the text available on a file descriptor one line at a time until the EOF.
@@ -27,10 +28,6 @@ INTERNAL EXPLAINATION OF FUNCTIONS
 Variables:
 static t_list *head: 
 A static linked list that points to the head of the linked list. It is static so it will remain persistent across function calls
-
-
-
-
 
 
 
