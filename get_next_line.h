@@ -6,27 +6,30 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:19 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/07/22 01:00:42 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:20:34 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
 
 typedef struct			s_buff
 {
-	char				buff[BUFFER_SIZE];
-	int					idx;
-	int					eol;
-	int					ln_siz;
-	int					line_idx;
+	char			buff[BUFFER_SIZE];
+	int				idx;
+	int				read_size;
+	int				ln_siz;
+	int				line_idx;
 }						t_buff;
 
 typedef struct			s_list
 {
-	int					fd;
-	t_buff				*tracker;
-	struct s_list		*next;
+	int				fd;
+	t_buff			*tracker;
+	struct s_list	*next;
 }						t_list;
 
 t_buff					*get_buff();

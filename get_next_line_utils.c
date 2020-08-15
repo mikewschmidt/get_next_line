@@ -6,13 +6,10 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:49 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/07/22 01:03:15 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:16:49 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include "get_next_line.h"
 
 t_buff	*get_buff(void)
@@ -23,7 +20,7 @@ t_buff	*get_buff(void)
 	if (!temp)
 		return (NULL);
 	temp->idx = 0;
-	temp->eol = 0;
+	temp->read_size = 0;
 	temp->ln_siz = 0;
 	temp->line_idx = 0;
 	return (temp);
@@ -70,39 +67,9 @@ t_buff	*get_fd_node(t_list **head, int fd)
 	if (!curr)
 		return (add_fd_node(head, fd));
 	while (curr->fd != fd && curr->next != NULL)
-	{
 		curr = curr->next;
-	}
 	if (curr->fd == fd)
 		return (curr->tracker);
 	else
 		return (add_fd_node(head, fd));
-}
-
-void	check_line_buff(char **line, t_buff **b)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	if ((*b)->line_idx >= (*b)->ln_siz - 1)
-	{
-		(*b)->ln_siz = ((*b)->ln_siz == 0) ? 2 : (*b)->ln_siz;
-		if (!(temp = (char*)malloc((*b)->ln_siz * (*b)->ln_siz * sizeof(char))))
-			return ;
-		if ((*b)->ln_siz > 2)
-		{
-			while (i < (*b)->ln_siz)
-			{
-				temp[i] = (*line)[i];
-				i++;
-			}
-			free(*line);
-		}
-		*line = temp;
-		(*b)->line_idx = i;
-		(*b)->ln_siz *= (*b)->ln_siz;
-	}
-	else
-		(*b)->line_idx++;
 }

@@ -6,14 +6,11 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 16:55:58 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/07/22 01:02:39 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:43:01 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
 
 int		reached_eof(char **line, int rturn)
 {
@@ -25,31 +22,50 @@ int		reached_eof(char **line, int rturn)
 	return (0);
 }
 
+void	increase_line_by(char **line, t_buff **b, int read_size)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	if (!(temp = (char *)malloc(((*b)->ln_siz + read_size) * sizeof(char) + 1)))
+		return ;
+	while (i < (*b)->ln_siz)
+	{
+		temp[i] = (*line)[i];
+		i++;
+	}
+	if ((*b)->ln_siz != 0)
+		free(*line);
+	*line = temp;
+	(*b)->ln_siz += read_size;
+}
+
 int		get_next_line(int fd, char **line)
 {
 	static t_list	*head;
-	t_buff			*temp;
+	t_buff			*node;
 	int				j;
 
 	j = 0;
-	if (BUFFER_SIZE < 1 || !line || !(temp = get_fd_node(&head, fd)))
+	if (BUFFER_SIZE < 1 || !line || !(node = get_fd_node(&head, fd)))
 		return (-1);
-	if (temp->idx == 0)
-		if ((temp->eol = read(fd, temp->buff, BUFFER_SIZE)) < 1)
-			return (reached_eof(line, temp->eol));
-	check_line_buff(line, &temp);
-	while (temp->buff[temp->idx] != '\n' && temp->eol > 0)
+	if (node->idx == 0)
+		if ((node->read_size = read(fd, node->buff, BUFFER_SIZE)) < 1)
+			return (reached_eof(line, node->read_size));
+	increase_line_by(line, &node, node->read_size);
+	while (node->buff[node->idx] != '\n' && node->read_size > 0)
 	{
-		check_line_buff(line, &temp);
-		(*line)[j++] = temp->buff[temp->idx++];
-		if (temp->idx >= temp->eol)
+		(*line)[j++] = node->buff[node->idx++];
+		if (node->idx >= node->read_size)
 		{
-			temp->eol = read(fd, temp->buff, BUFFER_SIZE);
-			temp->idx = 0;
+			node->read_size = read(fd, node->buff, BUFFER_SIZE);
+			node->idx = 0;
+			increase_line_by(line, &node, node->read_size);
 		}
 	}
 	(*line)[j] = '\0';
-	temp->ln_siz = 0;
-	(temp->idx >= temp->eol - 1) ? (temp->idx = 0) : (temp->idx++);
-	return ((temp->eol == 0) ? 0 : 1);
+	node->ln_siz = 0;
+	node->idx = (node->idx >= node->read_size - 1) ? 0 : node->idx + 1;
+	return ((node->read_size == 0) ? 0 : 1);
 }
