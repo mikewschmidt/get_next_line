@@ -6,11 +6,11 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:19 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/08/15 02:20:34 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/17 02:23:03 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE__BONUS_H
+#ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 # include <unistd.h>
 # include <stdlib.h>
