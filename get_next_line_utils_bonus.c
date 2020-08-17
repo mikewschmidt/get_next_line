@@ -6,7 +6,7 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:49 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/08/15 02:16:49 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/17 02:21:45 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,14 @@ void	remove_fd_node(t_list **head, int fd)
 		return ;
 	curr = *head;
 	prev = curr;
-	if ((*head)->fd == fd)
-	{
-		*head = curr->next;
-		free(curr->tracker);
-		free(curr);
-		curr = NULL;
-	}
 	while (curr != NULL)
 	{
 		if (curr->fd == fd)
 		{
 			if ((*head)->fd == fd)
-                                *head = curr->next;
-                        else
-                                prev->next = curr->next;
+				*head = curr->next;
+			else
+				prev->next = curr->next;
 			free(curr->tracker);
 			free(curr);
 			return ;
