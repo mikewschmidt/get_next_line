@@ -76,7 +76,10 @@ void	remove_fd_node(t_list **head, int fd)
 	{
 		if (curr->fd == fd)
 		{
-			prev->next = curr->next;
+			if ((*head)->fd == fd)
+                                *head = curr->next;
+                        else
+                                prev->next = curr->next;
 			free(curr->tracker);
 			free(curr);
 			return ;
