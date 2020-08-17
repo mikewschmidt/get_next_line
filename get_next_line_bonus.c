@@ -6,7 +6,7 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 16:55:58 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/08/15 02:43:01 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/17 02:19:05 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		reached_eof(int fd, char **line, int ret_val, t_list **head)
 	remove_fd_node(head, fd);
 	if (ret_val == -1)
 		return (-1);
-	if(!*line)
+	if (!*line)
 	{
 		if (!(*line = (char*)malloc(sizeof(char))))
 			return (-1);
