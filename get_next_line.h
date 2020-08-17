@@ -36,6 +36,6 @@ t_buff					*get_buff();
 t_list					*create_fd_node(int fd);
 t_buff					*add_fd_node(t_list **head, int fd);
 t_buff					*get_fd_node(t_list **head, int fd);
+void					remove_fd_node(t_list **head, int fd);
 int						get_next_line(int fd, char **line);
-void					check_line_buff(char **line, t_buff **buff);
 #endif

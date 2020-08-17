@@ -6,11 +6,11 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:19 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/08/15 02:24:39 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:20:34 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE__BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 # include <unistd.h>
 # include <stdlib.h>
@@ -36,6 +36,6 @@ t_buff					*get_buff();
 t_list					*create_fd_node(int fd);
 t_buff					*add_fd_node(t_list **head, int fd);
 t_buff					*get_fd_node(t_list **head, int fd);
+void					remove_fd_node(t_list **head, int fd);
 int						get_next_line(int fd, char **line);
-void					check_line_buff(char **line, t_buff **buff);
 #endif

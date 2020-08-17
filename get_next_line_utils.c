@@ -56,6 +56,36 @@ t_buff	*add_fd_node(t_list **head, int fd)
 	return (temp->tracker);
 }
 
+void	remove_fd_node(t_list **head, int fd)
+{
+	t_list	*curr;
+	t_list	*prev;
+
+	if (!head || !*head || fd < 0)
+		return ;
+	curr = *head;
+	prev = curr;
+	if ((*head)->fd == fd)
+	{
+		*head = curr->next;
+		free(curr->tracker);
+		free(curr);
+		curr = NULL;
+	}
+	while (curr != NULL)
+	{
+		if (curr->fd == fd)
+		{
+			prev->next = curr->next;
+			free(curr->tracker);
+			free(curr);
+			return ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
+
 t_buff	*get_fd_node(t_list **head, int fd)
 {
 	t_list	*curr;

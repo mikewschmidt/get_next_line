@@ -6,7 +6,7 @@
 /*   By: mschmidt <mschmidt@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/22 00:29:49 by mschmidt          #+#    #+#             */
-/*   Updated: 2020/08/15 02:25:32 by mschmidt         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:16:49 by mschmidt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,36 @@ t_buff	*add_fd_node(t_list **head, int fd)
 	temp->next = curr->next;
 	curr->next = temp;
 	return (temp->tracker);
+}
+
+void	remove_fd_node(t_list **head, int fd)
+{
+	t_list	*curr;
+	t_list	*prev;
+
+	if (!head || !*head || fd < 0)
+		return ;
+	curr = *head;
+	prev = curr;
+	if ((*head)->fd == fd)
+	{
+		*head = curr->next;
+		free(curr->tracker);
+		free(curr);
+		curr = NULL;
+	}
+	while (curr != NULL)
+	{
+		if (curr->fd == fd)
+		{
+			prev->next = curr->next;
+			free(curr->tracker);
+			free(curr);
+			return ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
 }
 
 t_buff	*get_fd_node(t_list **head, int fd)
